@@ -1,6 +1,6 @@
 ## React-Flux Todo Example using ES6 features
 
-Build with the boilerplate from Christian Alfoni - [flux-react](https://github.com/christianalfoni/flux-react)
+Build with the boilerplate from Christian Alfoni, but with ES6 features and a different build - [flux-react](https://github.com/christianalfoni/flux-react)
 
 ### Development
 * Run `npm install`
