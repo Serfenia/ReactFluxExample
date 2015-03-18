@@ -11,6 +11,7 @@ var notify = require('gulp-notify');
 var concat = require('gulp-concat');
 var cssmin = require('gulp-cssmin');
 var gutil = require('gulp-util');
+var shell = require('gulp-shell');
 var glob = require('glob');
 var livereload = require('gulp-livereload');
 var jasminePhantomJs = require('gulp-jasmine2-phantomjs');
@@ -69,11 +70,13 @@ var browserifyTask = function (options) {
   // in the application bundle
   if (options.development) {
 
-    var testFiles = glob.sync('./specs/**/*-spec.js');
+    var mainTestFiles = glob.sync('./specs/**/*-spec.js');
+    var componentTestFiles = glob.sync('./specs/components/**/*-spec.js');
+    var testFiles = mainTestFiles.concat(componentTestFiles);
     var testBundler = browserify({
       entries: testFiles,
       debug: true, // Gives us sourcemapping
-      transform: [reactify],
+      transform: [babelify, reactify],
       cache: {}, packageCache: {}, fullPaths: true // Requirement of watchify
     });
 
@@ -181,5 +184,6 @@ gulp.task('deploy', function () {
 });
 
 gulp.task('test', function () {
-  return gulp.src('./build/testrunner-phantomjs.html').pipe(jasminePhantomJs());
+  return gulp.src('./build/testrunner-phantomjs.html')
+    .pipe(jasminePhantomJs());
 });

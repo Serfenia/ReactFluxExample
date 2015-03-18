@@ -13,7 +13,7 @@ class TodoCheckbox extends React.Component {
   render() {
     return (
       <div>
-        <input id="input" ref={this.props.property} type="checkbox" onChange={this.updateValue.bind(this)} /> {this.props.title}
+        <input id="input" ref="isImportant" type="checkbox" onChange={this.updateValue.bind(this)} /> {this.props.title}
       </div>
     );
   }
