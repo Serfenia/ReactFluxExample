@@ -1,6 +1,7 @@
-## React-Flux Todo Example using ES6 features
+## React-Flux Todo Example using ES6 features and D3 network visualization
 
-Build with the boilerplate from Christian Alfoni, but with ES6 features and a different build - [flux-react](https://github.com/christianalfoni/flux-react)
+Built based on the boilerplate from Christian Alfoni, but with ES6 features and different dependencies - [flux-react](https://github.com/christianalfoni/flux-react)
+
 
 ### Development
 * Run `npm install`

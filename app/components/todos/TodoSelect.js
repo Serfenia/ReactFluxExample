@@ -5,9 +5,9 @@ import _ from 'lodash';
 import TodoStore from "./../../stores/TodoStore.js";
 
 class TodoSelect extends React.Component {
-  constructor() {
+  constructor(props) {
     this.state = {
-      todos: (TodoStore.getTodos() || {})
+      todos: (TodoStore.getTodosByPerson(props) || {})
     }
   }
   updateValue(event) {
@@ -18,14 +18,16 @@ class TodoSelect extends React.Component {
   }
   clear() {
     this.refs[this.props.property].getDOMNode().value = this.state.todos[Object.keys(this.state.todos)[0]].title
+    this.changeState();
   }
   changeState(){
-    var todos = TodoStore.getTodos();
+    var todos = TodoStore.getTodosByPerson(this.props.person);
     this.setState({
       todos: todos
     });
   }
   componentWillMount() {
+
     TodoStore.addChangeListener(this.changeState.bind(this));
     if(!_.isEmpty(this.state.todos))
       this.props.handleChange({

@@ -9,10 +9,11 @@ import D3Container from './components/d3/D3Container.js';
 /** Styles */
 const style = {
   containerStyle: {
-    width: 800
+    width: 820
   },
   subContainerStyle: {
     width: 400,
+    marginRight: 10,
     float: 'left'
   }
 };
@@ -27,9 +28,7 @@ class App extends React.Component {
           <h1>Todo's</h1>
           <TodoTable />
         </div>
-        <D3Container style={style.subContainerStyle}>
-
-        </D3Container>
+        <D3Container style={style.subContainerStyle} />
       </div>
     );
   }

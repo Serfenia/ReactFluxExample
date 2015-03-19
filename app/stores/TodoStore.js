@@ -1,4 +1,5 @@
 import Flux from 'flux-react';
+import _ from 'lodash';
 
 /** Dispatcher */
 import Dispatcher from './../dispatcher/Dispatcher.js';
@@ -29,6 +30,17 @@ var TodoStore = Flux.createStore({
   exports: {
     getTodos: function () {
       return this.todos;
+    },
+    getTodosByPerson: function(personName) {
+      console.log(personName);
+      var keys = Object.keys(this.todos);
+      var personTodos = {};
+      _.each(keys, (key) => {
+        if(this.todos[key].assignedTo === personName) {
+          personTodos[key] = this.todos[key];
+        }
+      });
+      console.log(personTodos);
     }
   }
 });

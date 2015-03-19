@@ -6,14 +6,26 @@ import _     from 'lodash';
 import PeopleStore from './../../stores/PeopleStore.js';
 import TodoStore from './../../stores/TodoStore.js';
 
+const selectStyle = {
+  width: 400
+};
+
 class D3Container extends React.Component {
   constructor() {
     this.state = {
       nodes: [],
-      links: []
+      links: [],
+      selectedPerson: _.first(PeopleStore.getPeople()).name
     }
   }
-  changeState() {
+  changePerson(event) {
+    console.log(event.target.value);
+    this.setState({
+      selectedPerson: event.target.value
+    });
+    this.changeVisualization(event.target.value);
+  }
+  changeVisualization(person) {
     var tooltip = d3.select("body")
       .append("div")
       .style("position", "absolute")
@@ -24,24 +36,32 @@ class D3Container extends React.Component {
     var svg = d3.select('svg');
     svg.selectAll('*').remove();
 
+    if(!person) {
+      person = this.state.selectedPerson
+    }
+
     var color = d3.scale.category20();
-    var person = PeopleStore.getPeople()[0];
-    var nodes = [{label:person.name, weight:4, group: 1}];
+    var nodes = [{label:person, weight:4, group: 1}];
     var links = [];
 
     var todos = TodoStore.getTodos();
     _.each(todos, (todo) => {
-      if(todo.assignedTo === person.name) {
+      console.log(person);
+      if(todo.assignedTo === person) {
+        
         nodes.push({
           label: todo.title,
           weight: 1,
           group: todo.subtaskOf ? 3 : 2
         });
-        links.push({
-          source: 0,
-          target: nodes.length-1,
-          weight: 1
-        });
+
+        if(!todo.subtaskOf) {
+          links.push({
+            source: 0,
+            target: nodes.length-1,
+            weight: 1
+          });
+        }
 
         if(todo.subtaskOf) {
           var keys = Object.keys(todos);
@@ -116,14 +136,26 @@ class D3Container extends React.Component {
     })
   }
   componentDidMount() {
-    TodoStore.addChangeListener(this.changeState.bind(this));
-    this.changeState();
+    TodoStore.addChangeListener(this.changeVisualization.bind(this));
+    this.changeVisualization(this.state.selectedPerson);
   }
 
   render() {
+    var options = [];
+
+    _.each(PeopleStore.getPeople(), function(person) {
+      options.push(<option key={person.id} value={person.name}>{person.name}</option>);
+    });
+
     return (
-      <svg width="400" height="600" ref="svg">
-      </svg>
+      <div>
+        <h4>Select a person to change the visualization</h4>
+        <select className="form-control" style={selectStyle} onChange={this.changePerson.bind(this)}>
+          {options}
+        </select>
+        <svg width="400" height="600" ref="svg">
+        </svg>
+      </div>
     );
   }
 }
