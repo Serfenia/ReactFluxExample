@@ -7,14 +7,11 @@ class TodoInput extends React.Component {
       value: event.target.value
     });
   }
-  clear() {
-    this.refs[this.props.property].getDOMNode().value = '';
-  }
   render() {
     return (
       <div>
         <label htmlFor="input">{this.props.title}</label>
-        <input required="true" id="input" className="form-control" ref={this.props.property} type="text" onChange={this.updateValue.bind(this)} />
+        <input required="true" id="input" className="form-control" placeholder={this.props.title} value={this.props.value} type="text" onChange={this.updateValue.bind(this)} />
       </div>
     );
   }

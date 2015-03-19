@@ -70,9 +70,7 @@ var browserifyTask = function (options) {
   // in the application bundle
   if (options.development) {
 
-    var mainTestFiles = glob.sync('./specs/**/*-spec.js');
-    var componentTestFiles = glob.sync('./specs/components/**/*-spec.js');
-    var testFiles = mainTestFiles.concat(componentTestFiles);
+    var testFiles = glob.sync('./specs/**/*-spec.js');
     var testBundler = browserify({
       entries: testFiles,
       debug: true, // Gives us sourcemapping

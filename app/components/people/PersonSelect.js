@@ -12,26 +12,29 @@ _.each(people, function(person) {
 
 class PersonSelect extends React.Component {
   updateValue(event) {
-    console.log(event.target.value);
     this.props.handleChange({
       property: this.props.property,
       value: event.target.value
     });
   }
-  clear() {
-    this.refs[this.props.property].getDOMNode().value = _.first(people).name;
-  }
-  componentWillMount() {
+  setInitialValue() {
     this.props.handleChange({
       property: this.props.property,
       value: _.first(people).name
     });
   }
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.value == 'none')
+      this.setInitialValue()
+  }
+  componentWillMount() {
+    this.setInitialValue()
+  }
   render() {
     return (
       <div>
         <label htmlFor="select">{this.props.title}</label>
-        <select required="true" id="input" className="form-control" ref={this.props.property} onChange={this.updateValue.bind(this)}>
+        <select required="true" id="input" className="form-control" defaultValue={_.first(people).name} value={this.props.value} ref={this.props.property} onChange={this.updateValue.bind(this)}>
           {options}
         </select>
       </div>

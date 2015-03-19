@@ -59,7 +59,7 @@ class D3Container extends React.Component {
           links.push({
             source: 0,
             target: nodes.length-1,
-            weight: 1
+            weight: 10
           });
         }
 
@@ -68,7 +68,7 @@ class D3Container extends React.Component {
           for(var i = 0; i < keys.length; i++) {
             if(todo.subtaskOf === todos[keys[i]].title) {
               var obj = {
-                source: links[links.length-1].target,
+                source: nodes.length-1,
                 target: (function(todo) {
                   var index = -1;
                   _.each(nodes, (node) => {
@@ -78,7 +78,7 @@ class D3Container extends React.Component {
                   });
                   return index;
                 })(todos[keys[i]]),
-                weight: 1
+                weight: 5
               };
               console.log(obj);
               links.push(obj);
@@ -91,18 +91,37 @@ class D3Container extends React.Component {
     var force = d3.layout.force()
       .nodes(nodes)
       .links(links)
-      .charge(-120)
-      .linkDistance(100)
-      .size([400, 600]);
+      .charge(-600)
+      .linkDistance(150)
+      .size([800, 600]);
+
 
     force.start();
+    force.on("tick", function(event) {
+      link.attr("x1", function(d) { return d.source.x; })
+          .attr("y1", function(d) { return d.source.y; })
+          .attr("x2", function(d) { return d.target.x; })
+          .attr("y2", function(d) { return d.target.y; });
+
+      node.attr("cx", function(d) { return d.x; })
+          .attr("cy", function(d) { return d.y; });
+    });
 
     var link = svg.selectAll(".link")
       .data(links)
       .enter().append("line")
       .attr("class", "link")
       .style("stroke", "black")
-      .style("stroke-width", "1");
+      .style("stroke-width", "1")
+      .on("mouseover", function(d){
+      tooltip.text(d.label);
+      return tooltip.style("visibility", "visible");})
+      .on("mousemove", function(){return tooltip.style("top",
+        (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
+      .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+
+    link.append("title")
+      .text(function(d) { return "Link" });
 
     var node = svg.selectAll(".node")
       .data(nodes)
@@ -115,25 +134,16 @@ class D3Container extends React.Component {
         return tooltip.style("visibility", "visible");})
       .on("mousemove", function(){return tooltip.style("top",
         (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");})
-      .on("mouseout", function(){return tooltip.style("visibility", "hidden");})
-      .call(force.drag);
+      .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
     node.append("title")
       .text(function(d) { return d.name; });
 
-    force.on("tick", function() {
-      link.attr("x1", function(d) { return d.source.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("x2", function(d) { return d.target.x; })
-        .attr("y2", function(d) { return d.target.y; });
-
-      node.attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
-    });
     this.setState({
       nodes,
       links
-    })
+    });
+
   }
   componentDidMount() {
     TodoStore.addChangeListener(this.changeVisualization.bind(this));
@@ -153,7 +163,7 @@ class D3Container extends React.Component {
         <select className="form-control" style={selectStyle} onChange={this.changePerson.bind(this)}>
           {options}
         </select>
-        <svg width="400" height="600" ref="svg">
+        <svg width="800" height="600" ref="svg">
         </svg>
       </div>
     );

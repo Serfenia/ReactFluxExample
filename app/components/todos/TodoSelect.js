@@ -5,10 +5,8 @@ import _ from 'lodash';
 import TodoStore from "./../../stores/TodoStore.js";
 
 class TodoSelect extends React.Component {
-  constructor(props) {
-    this.state = {
-      todos: (TodoStore.getTodosByPerson(props) || {})
-    }
+  constructor() {
+    this.state = { todos: {} };
   }
   updateValue(event) {
     this.props.handleChange({
@@ -17,7 +15,7 @@ class TodoSelect extends React.Component {
     });
   }
   clear() {
-    this.refs[this.props.property].getDOMNode().value = this.state.todos[Object.keys(this.state.todos)[0]].title
+    this.refs[this.props.property].getDOMNode().value = 'none';
     this.changeState();
   }
   changeState(){
@@ -26,24 +24,30 @@ class TodoSelect extends React.Component {
       todos: todos
     });
   }
+  componentWillReceiveProps(nextProps) {
+    if(this.props.person !== nextProps.person) {
+      this.setState({
+        todos: (TodoStore.getTodosByPerson(nextProps.person) || {})
+      });
+    }
+  }
   componentWillMount() {
-
     TodoStore.addChangeListener(this.changeState.bind(this));
     if(!_.isEmpty(this.state.todos))
       this.props.handleChange({
         property: this.props.property,
-        value: this.state.todos[Object.keys(this.state.todos)[0]].title
+        value: 'none'
       });
   }
   render() {
-    var options = [];
+    var options = [<option key={-1} value="none">Choose..</option>];
     _.each(this.state.todos, function(todo) {
       options.push(<option key={todo.id} value={todo.title}>{todo.title}</option>);
     });
     return (
       <div>
         <label htmlFor="select">{this.props.title}</label>
-        <select id="input" className="form-control" ref={this.props.property} onChange={this.updateValue.bind(this)}>
+        <select id="input" className="form-control" ref={this.props.property} value={this.props.subtaskOf} onChange={this.updateValue.bind(this)}>
           {options}
         </select>
       </div>

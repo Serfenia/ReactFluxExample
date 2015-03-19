@@ -41,8 +41,12 @@ class TodoItem extends React.Component {
   }
 
   render() {
-    const toggledContent = this.state.toggled ? <span>
-      <strong>Assigned to: </strong>{this.props.todo.assignedTo}</span> : '';
+    const toggledContent = this.state.toggled ?
+      <span>
+        <strong>Assigned to: </strong>{this.props.todo.assignedTo} <br />
+        <strong>Subtask of: </strong>{this.props.todo.subtaskOf} <br />
+      </span>
+      : '';
     const rowClass = this.props.todo.isImportant ? 'danger' : '';
     if(this.state.editable) {
       return (

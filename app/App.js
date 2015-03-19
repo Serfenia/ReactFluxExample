@@ -9,23 +9,22 @@ import D3Container from './components/d3/D3Container.js';
 /** Styles */
 const style = {
   containerStyle: {
-    width: 820
+    width: 860
   },
   subContainerStyle: {
-    width: 400,
-    marginRight: 10,
-    float: 'left'
+    width: 860,
+    float: 'left',
+    height: 400
   }
+
 };
 
 class App extends React.Component {
 	render() {
     return (
       <div className="center-block top15" style={style.containerStyle}>
-        <div style={style.subContainerStyle}>
+        <div className="well" style={style.subContainerStyle}>
           <TodoForm />
-
-          <h1>Todo's</h1>
           <TodoTable />
         </div>
         <D3Container style={style.subContainerStyle} />

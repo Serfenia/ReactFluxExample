@@ -10,10 +10,14 @@ var TodoStore = Flux.createStore({
   actions: [
     Dispatcher.addTodo,
     Dispatcher.updateTodo,
-    Dispatcher.removeTodo
+    Dispatcher.removeTodo,
+    Dispatcher.clearTodos
   ],
   addTodo: function (todo) {
     todo.id = this.index;
+    if(todo.subtaskOf === 'none') {
+      todo.subtaskOf = null;
+    }
     this.todos[this.index] = todo;
     this.emitChange();
     this.index++;
@@ -25,6 +29,16 @@ var TodoStore = Flux.createStore({
   },
   removeTodo: function(todo) {
     delete this.todos[todo.id];
+    _.each(Object.keys(this.todos), (key) => {
+      var possibleSubTodo = this.todos[this.todos[key].id];
+      if(possibleSubTodo.subtaskOf === todo.title) {
+        delete this.todos[possibleSubTodo.id];
+      }
+    });
+    this.emitChange();
+  },
+  clearTodos: function() {
+    this.todos = {};
     this.emitChange();
   },
   exports: {
@@ -32,15 +46,15 @@ var TodoStore = Flux.createStore({
       return this.todos;
     },
     getTodosByPerson: function(personName) {
-      console.log(personName);
       var keys = Object.keys(this.todos);
       var personTodos = {};
       _.each(keys, (key) => {
+
         if(this.todos[key].assignedTo === personName) {
           personTodos[key] = this.todos[key];
         }
       });
-      console.log(personTodos);
+      return personTodos;
     }
   }
 });

@@ -11,25 +11,37 @@ import TodoCheckbox from './TodoCheckbox.js';
 import PersonSelect from './../people/PersonSelect.js';
 import TodoSelect from './../todos/TodoSelect.js';
 
+const style = {
+  formStyle: {
+    width: 400,
+    height: 360,
+    float: 'left',
+    position: 'relative'
+  },
+  buttonStyle: {
+    bottom: 0,
+    position: 'absolute'
+  }
+};
+
+const initialState = {
+  title: '',
+  assignedTo: '',
+  subtaskOf: 'none',
+  isImportant: false
+}
 
 class TodoForm extends React.Component {
   constructor() {
-    this.state = {
-      title: '',
-      assignedTo: '',
-      subtaskOf: null,
-      isImportant: false
-    }
+    this.state = initialState
   }
   updateTodo(obj) {
     var newState = {};
     newState[obj.property] = obj.value;
-    this.setState(newState)
+    this.setState(newState);
   }
   clearForm() {
-    _.each(this.refs, (ref) => {
-      ref.clear();
-    });
+    this.setState(initialState);
   }
   addTodo(event) {
     event.preventDefault();
@@ -39,14 +51,14 @@ class TodoForm extends React.Component {
   }
   render() {
     return (
-      <form className="form well" onSubmit={this.addTodo.bind(this)}>
-        <h3>Add a todo</h3>
-        <TodoInput title="Title" property="title" ref="title" type="text" handleChange={this.updateTodo.bind(this)} />
-        <PersonSelect title="Assign to" property="assignedTo" ref="assigendTo" type="text" handleChange={this.updateTodo.bind(this)} />
-        <TodoSelect title="Subtask of" property="subtaskOf" ref="subtaskOf" handleChange={this.updateTodo.bind(this)} />
-        <TodoCheckbox title="Important?" property="isImportant" person={this.state.assignedTo} ref="isImportant" type="checkbox" handleChange={this.updateTodo.bind(this)} />
+      <form className="form" style={style.formStyle} onSubmit={this.addTodo.bind(this)}>
+        <h1>Add a todo</h1>
+        <TodoInput title="Title" property="title" type="text" value={this.state.title} handleChange={this.updateTodo.bind(this)} />
+        <PersonSelect title="Assign to" property="assignedTo" type="text" value={this.state.assignedTo} handleChange={this.updateTodo.bind(this)} />
+        <TodoSelect title="Subtask of" property="subtaskOf" person={this.state.assignedTo} value={this.state.subtaskOf} handleChange={this.updateTodo.bind(this)} />
+        <TodoCheckbox title="Important?" property="isImportant" ref="isImportant" type="checkbox" handleChange={this.updateTodo.bind(this)} />
         <br />
-        <button className="btn btn-primary form-control offset1">Add</button>
+        <button className="btn btn-primary form-control offset1" style={style.buttonStyle}>Add</button>
       </form>
     );
   }
