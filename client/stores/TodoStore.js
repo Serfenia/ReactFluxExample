@@ -4,9 +4,11 @@ import _ from 'lodash';
 /** Dispatcher */
 import Dispatcher from './../dispatcher/Dispatcher.js';
 
+var localStorage = window.localStorage;
+
 var TodoStore = Flux.createStore({
-  todos: localStorage['todos'] ? JSON.parse(localStorage['todos']) : {},
-  index: localStorage['index'] ? localStorage.getItem('index') : 0,
+  todos: {},
+  index: 0,
   actions: [
     Dispatcher.addTodo,
     Dispatcher.updateTodo,
@@ -21,7 +23,6 @@ var TodoStore = Flux.createStore({
     this.todos[this.index] = todo;
     this.emitChange();
     this.index++;
-    localStorage.setItem('index', this.index);
   },
   updateTodo: function(todo) {
     this.todos[todo.id] = todo;

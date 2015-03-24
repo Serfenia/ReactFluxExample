@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-var App = require('././App.js');
+var App = require('./../client/App.js');
 var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
 

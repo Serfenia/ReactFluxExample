@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-var TodoCheckbox = require('./../.././components/todos/TodoCheckbox.js');
+var TodoCheckbox = require('./../../../client/components/todos/TodoCheckbox.js');
 var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
 

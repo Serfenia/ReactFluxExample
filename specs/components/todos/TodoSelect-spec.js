@@ -1,10 +1,10 @@
 import _ from 'lodash';
 
-var TodoSelect = require('./../.././components/todos/TodoSelect.js');
+var TodoSelect = require('./../../../client/components/todos/TodoSelect.js');
 
-var Dispatcher = require('./../.././dispatcher/Dispatcher.js');
+var Dispatcher = require('./../../../client/dispatcher/Dispatcher.js');
 
-var TodoStore = require('./../.././stores/TodoStore.js');
+var TodoStore = require('./../../../client/stores/TodoStore.js');
 
 var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;

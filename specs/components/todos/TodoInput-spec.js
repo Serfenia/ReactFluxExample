@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-var TodoInput = require('./../.././components/todos/TodoInput.js');
+var TodoInput = require('./../../../client/components/todos/TodoInput.js');
 var React = require('react/addons');
 var TestUtils = React.addons.TestUtils;
 
