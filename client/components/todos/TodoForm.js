@@ -4,6 +4,9 @@ import _     from 'lodash';
 /** Dispatcher */
 import Dispatcher from './../../dispatcher/Dispatcher.js';
 
+/** Stores */
+import TodoStore from './../../stores/TodoStore.js';
+
 /** Components */
 import TodoInput from './TodoInput.js';
 import TodoCheckbox from './TodoCheckbox.js';
@@ -13,7 +16,7 @@ import TodoSelect from './../todos/TodoSelect.js';
 
 const style = {
   formStyle: {
-    width: 400,
+    width: '50%',
     height: 360,
     float: 'left',
     position: 'relative'
@@ -24,7 +27,7 @@ const style = {
   }
 };
 
-const initialState = {
+var initialState = {
   title: '',
   assignedTo: '',
   subtaskOf: 'none',
@@ -45,7 +48,6 @@ class TodoForm extends React.Component {
   }
   addTodo(event) {
     event.preventDefault();
-    console.log(this.state);
     Dispatcher.addTodo(this.state);
     this.clearForm()
   }

@@ -9,12 +9,13 @@ import D3Container  from './components/d3/D3Container.js';
 /** Styles */
 const style = {
   containerStyle: {
-    width: 860
+    width: '100%'
   },
   subContainerStyle: {
-    width: 860,
+    width: '100%',
     float: 'left',
-    height: 400
+    height: 400,
+    position:'relative'
   }
 };
 

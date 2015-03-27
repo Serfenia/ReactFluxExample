@@ -11,8 +11,8 @@ import TodoItem from './TodoItem.js';
 
 const style = {
   containerStyle: {
-    marginLeft: 20,
-    width: 400,
+    marginLeft: '2%',
+    width: '48%',
     float: 'left',
     height: 360,
     overflowY: "scroll"
@@ -53,7 +53,6 @@ class TodoTable extends React.Component {
     this.setState({
       todos: todos
     });
-    localStorage.setItem('todos', JSON.stringify(todos));
   }
   renderTodo(todo){
     return (
